@@ -1,0 +1,13 @@
+- name: install apache with mod_wsgi
+  apt:
+    pkg:
+    - apache2
+    - libapache2-mod-security2
+    - libapache2-mod-wsgi-py3
+    update_cache: yes
+- template:
+    src: templates/apache_conf_pre_ssl.j2
+    dest: /etc/apache2/sites-available/{{host}}.{{domain}}.conf
+    owner: www-data
+    group: www-data
+- command: a2ensite {{host}}.{{domain}}
