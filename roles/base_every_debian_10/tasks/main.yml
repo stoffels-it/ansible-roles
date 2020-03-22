@@ -1,22 +1,23 @@
 - name: install packages
   apt:
-          pkg:
-          - vim
-          - htop
-          - net-tools
-          - iftop
-          - man
-          - ntp
-          - apt-transport-https
-          - less
-          - screen
-          - netcat-openbsd
-          - curl
-          - wget
-          - git
-          - ca-certificates
-          - acl
-          - ufw
+    pkg:
+      - vim
+      - htop
+      - net-tools
+      - iftop
+      - man
+      - ntp
+      - apt-transport-https
+      - less
+      - screen
+      - netcat-openbsd
+      - curl
+      - wget
+      - git
+      - ca-certificates
+      - acl
+      - ufw
+    update_cache: yes
 
 # fw default deny incoming
 # ufw default allow outgoing

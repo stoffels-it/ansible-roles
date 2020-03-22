@@ -1,0 +1,6 @@
+- name: install nginx+gunicorn for python apps
+  apt:
+    pkg:
+    - nginx
+    - gunicorn
+    update_cache: yes
