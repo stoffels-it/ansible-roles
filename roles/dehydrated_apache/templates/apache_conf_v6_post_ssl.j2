@@ -6,6 +6,8 @@
     SSLProtocol all -SSLv2 -SSLv3
     SSLHonorCipherOrder on
     SSLCipherSuite AES128+EECDH:AES128+EDH
+    # BE CAREFUL with HSTS config because it can set users' browser configuration at the first visit
+    # being valid for a long time before it will be updated again
     #    Header always set Strict-Transport-Security "max-age=72000"
     #    Header always set X-Frame-Options DENY
     #    Header always set X-Content-Type-Options nosniff
