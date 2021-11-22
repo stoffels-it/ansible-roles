@@ -1,8 +1,0 @@
-<VirtualHost {{ansible_default_ipv4.address}}:80 [{{ansible_default_ipv6.address}}]:80>
-    ServerName {{host}}.{{domain}}
-    ServerAlias {{domain}} *.{{domain}}
-    Alias /.well-known/acme-challenge /var/www/acme-challenge
-    RedirectMatch ^/(?!\.well-known/).* https://{{host}}.{{domain}}/
-    ErrorLog "|/usr/bin/rotatelogs /var/log/apache2/{{host}}.{{domain}}/http-error-%Y-%m-%d.log 86400"
-    CustomLog "|/usr/bin/rotatelogs /var/log/apache2/{{host}}.{{domain}}/http-access-%Y-%m-%d.log 86400" combined
-</VirtualHost>
