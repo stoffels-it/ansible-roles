@@ -1,0 +1,8 @@
+# find full reference here: https://github.com/dehydrated-io/dehydrated/blob/master/docs/examples/config
+CONTACT_EMAIL="{{letsenc_email}}"
+CHALLENGETYPE="dns-01"
+HOOK="${BASEDIR}/hetzner_dns_hook.sh"
+# for testing purposes, use the staging server below. Needs --register --accept-terms again
+#CA="https://acme-staging-v02.api.letsencrypt.org/directory"
+# default was changed in debian package recently, but we want to avoid problems here
+KEY_ALGO=rsa

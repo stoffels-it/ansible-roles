@@ -1,0 +1,39 @@
+- name: install dehydrated for letsencrypt host verification
+  apt:
+    pkg:
+    - dehydrated
+    - dehydrated-apache2
+    update_cache: yes
+- template:
+# attention, comma at the end of just one domain in the file leads to errors
+    src: templates/domains.j2
+    dest: /etc/dehydrated/domains.txt
+- copy:
+    src: /usr/share/doc/dehydrated/examples/hook.sh
+    dest: /etc/dehydrated/hook.sh
+    remote_src: yes
+- template:
+    src: templates/contact.j2
+    dest: /etc/dehydrated/conf.d/contact.sh
+- copy:
+    src: files/hook.sh
+    dest: /etc/dehydrated/hook.sh
+- command: dehydrated --register --accept-terms
+- command: dehydrated -c
+- blockinfile:
+    dest: /etc/apache2/sites-available/{{host}}.{{domain}}.conf
+    block: "{{ lookup('template', 'apache_conf_v6_post_ssl.j2') }}"
+    marker: "# {mark} \n# ADDED SSL BY ANSIBLE ROLE FOR DEHYDRATED"
+  when: ansible_default_ipv6.address
+- blockinfile:
+    dest: /etc/apache2/sites-available/{{host}}.{{domain}}.conf
+    block: "{{ lookup('template', 'apache_conf_post_ssl.j2') }}"
+    marker: "# {mark} ADDED SSL BY ANSIBLE ROLE FOR DEHYDRATED"
+  when: not ansible_default_ipv6.address
+- command: a2enmod ssl
+- service:
+    name: apache2
+    state: reloaded
+- copy:
+    src: files/dehydrated_cronjob
+    dest: /etc/cron.daily/dehydrated

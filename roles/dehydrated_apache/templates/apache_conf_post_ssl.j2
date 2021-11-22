@@ -1,0 +1,19 @@
+<VirtualHost {{ansible_default_ipv4.address}}:443>
+    ServerName {{host}}.{{domain}}
+    Alias /.well-known/acme-challenge /var/www/acme-challenge
+
+    SSLEngine on
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLHonorCipherOrder on
+    SSLCipherSuite AES128+EECDH:AES128+EDH
+    #    Header always set Strict-Transport-Security "max-age=72000"
+    #    Header always set X-Frame-Options DENY
+    #    Header always set X-Content-Type-Options nosniff
+
+    SSLCertificateFile /var/lib/dehydrated/certs/{{host}}.{{domain}}/fullchain.pem
+    SSLCertificateKeyFile /var/lib/dehydrated/certs/{{host}}.{{domain}}/privkey.pem
+
+    ErrorLog "|/usr/bin/rotatelogs /var/log/apache2/{{host}}.{{domain}}/https-error-%Y-%m-%d.log 86400"
+    CustomLog "|/usr/bin/rotatelogs /var/log/apache2/{{host}}.{{domain}}/https-access-%Y-%m-%d.log 86400" combined
+</VirtualHost>
+

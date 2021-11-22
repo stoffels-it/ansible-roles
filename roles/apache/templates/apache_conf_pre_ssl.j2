@@ -1,0 +1,6 @@
+<VirtualHost {{ansible_default_ipv4.address}}:80>
+    ServerName {{host}}.{{domain}}
+    RedirectMatch ^/(?!\.well-known/).* https://{{host}}.{{domain}}/
+    ErrorLog "|/usr/bin/rotatelogs /var/log/apache2/{{host}}.{{domain}}/http-error-%Y-%m-%d.log 86400"
+    CustomLog "|/usr/bin/rotatelogs /var/log/apache2/{{host}}.{{domain}}/http-access-%Y-%m-%d.log 86400" combined
+</VirtualHost>

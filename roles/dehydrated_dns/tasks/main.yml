@@ -1,0 +1,25 @@
+- name: install dehydrated and lexicon for dns-based validation
+  apt:
+    pkg:
+    - dehydrated
+    - lexicon
+# get the further requirements from __init__.py of lexicon
+# in case of hetzner dns api, these are:
+    - python3-bs4
+    - python3-dnspython
+    update_cache: yes
+- template:
+    src: templates/domains.j2
+    dest: /etc/dehydrated/domains.txt
+- template:
+    src: templates/hetzner_dns_hook.j2
+    dest: /var/lib/dehydrated/hetzner_dns_hook.sh
+    mode: '0700'
+- template:
+    src: templates/custom.j2
+    dest: /etc/dehydrated/conf.d/custom.sh
+- command: dehydrated --register --accept-terms
+- command: dehydrated -c
+- copy:
+    src: files/dehydrated_cronjob
+    dest: /etc/cron.daily/dehydrated

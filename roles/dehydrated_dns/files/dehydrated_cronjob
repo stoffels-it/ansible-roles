@@ -1,0 +1,3 @@
+#!/bin/sh
+/usr/bin/dehydrated -c
+systemctl reload apache2

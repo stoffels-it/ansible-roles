@@ -1,0 +1,28 @@
+- name: install apache with mod_wsgi
+  apt:
+    pkg:
+    - apache2
+    - libapache2-mod-security2
+    - libapache2-mod-evasive
+#    - libapache2-mod-wsgi-py3
+    update_cache: yes
+- template:
+    src: templates/apache_conf_v6_pre_ssl.j2
+    dest: /etc/apache2/sites-available/{{host}}.{{domain}}.conf
+    owner: www-data
+    group: www-data
+  when: ansible_default_ipv6.address
+- template:
+    src: templates/apache_conf_pre_ssl.j2
+    dest: /etc/apache2/sites-available/{{host}}.{{domain}}.conf
+    owner: www-data
+    group: www-data
+  when: not ansible_default_ipv6.address
+- command: a2ensite {{host}}.{{domain}}
+- file:
+    name: "/var/log/apache2/{{host}}.{{domain}}"
+    state: directory
+- service:
+    name: apache2
+    state: restarted
+    enabled: yes
